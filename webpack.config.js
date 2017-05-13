@@ -2,6 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const bootstrapEntryPoints = require('./webpack.bootstrap.config');
 
 let isProd = /^\s*production\s*$/.test(process.env.NODE_ENV);
 var scssDev = ['style-loader', 'css-loader', 'sass-loader'];
@@ -16,6 +17,7 @@ var cssProd = ExtractTextPlugin.extract({
 });
 let scssConfig = isProd ? scssProd : scssDev;
 let cssConfig = isProd ? cssProd : cssDev;
+let bootstrapConfig = isProd ? bootstrapEntryPoints.prod: bootstrapEntryPoints.dev;
 
 ///plugins
 let plugins = [
@@ -43,7 +45,8 @@ plugins.push(
 
 module.exports = {
     entry: {
-        app: './src/app.js'
+        app: './src/app.js',
+        bootstrap: bootstrapConfig
     },
     output: {
         path: path.resolve(__dirname, './dist'),
@@ -67,7 +70,7 @@ module.exports = {
                 test: /\.(jpe?g|png|gif|svg)$/i,
                 exclude: /node_modules/,
                 use: [
-                    'file-loader?name=images/[hash:10].[ext]',
+                    'file-loader?name=images/[name].[ext]?[hash:12]',
                     {
                         loader: 'image-webpack-loader',
                         query: {
@@ -87,7 +90,10 @@ module.exports = {
                         }
                     }
                 ]
-            }
+            },
+            { test: /\.(woff2?|svg)$/, loader: 'url-loader?limit=10000' },
+            { test: /\.(ttf|eot)$/, loader: 'file-loader' },
+            { test:/bootstrap-sass[\/\\]assets[\/\\]javascripts[\/\\]/, loader: 'imports-loader?jQuery=jquery' }
         ]
     },
     devServer: {
