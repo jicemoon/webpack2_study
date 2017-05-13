@@ -6,7 +6,7 @@
 bootstrapVersion: 3
 
 # If Bootstrap version 3 is used - turn on/off custom icon font path
-useCustomIconFontPath: false
+useCustomIconFontPath: true
 
 # Webpack loaders, order matters
 styleLoaders:
@@ -19,10 +19,10 @@ styleLoaders:
 # It depends on value of NODE_ENV environment variable
 # This param can also be set in webpack config:
 #   entry: 'bootstrap-loader/extractStyles'
-extractStyles: false
+extractStyles: true
 # env:
 #   development:
-#     extractStyles: false
+#     extractStyles: true
 #   production:
 #     extractStyles: true
 
@@ -102,15 +102,15 @@ styles:
 
 ### Bootstrap scripts
 scripts:
-  transition: false
-  alert: false
-  button: false
-  carousel: false
-  collapse: false
-  dropdown: false
+  transition: true
+  alert: true
+  button: true
+  carousel: true
+  collapse: true
+  dropdown: true
   modal: true
-  tooltip: false
+  tooltip: true
   popover: true
-  scrollspy: false
-  tab: false
-  affix: false
+  scrollspy: true
+  tab: true
+  affix: true

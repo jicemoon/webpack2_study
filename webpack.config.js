@@ -3,6 +3,8 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const bootstrapEntryPoints = require('./webpack.bootstrap.config');
+const glob = require('glob');
+const PurifyCSSPlugin = require('purifycss-webpack');
 
 let isProd = /^\s*production\s*$/.test(process.env.NODE_ENV);
 var scssDev = ['style-loader', 'css-loader', 'sass-loader'];
@@ -40,7 +42,10 @@ plugins.push(
         allChunks: true
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin()
+    new webpack.NamedModulesPlugin(),
+    new PurifyCSSPlugin({
+      paths: glob.sync(path.join(__dirname, 'src/*.html')),
+    })
 )
 
 module.exports = {
@@ -91,8 +96,8 @@ module.exports = {
                     }
                 ]
             },
-            { test: /\.(woff2?|svg)$/, loader: 'url-loader?limit=10000' },
-            { test: /\.(ttf|eot)$/, loader: 'file-loader' },
+            { test: /\.(woff2?|svg)$/, loader: 'url-loader?limit=10000&name=fonts/[name].[ext]' },
+            { test: /\.(ttf|eot)$/, loader: 'file-loader?name=fonts/[name].[ext]' },
             { test:/bootstrap-sass[\/\\]assets[\/\\]javascripts[\/\\]/, loader: 'imports-loader?jQuery=jquery' }
         ]
     },
@@ -100,7 +105,8 @@ module.exports = {
         contentBase: path.join(__dirname, "dist"),
         compress: true,
         port: 9000,
-        hot: true
+        hot: true,
+        inline: true
         // stats: "errors-only",
         //open: true
     },
