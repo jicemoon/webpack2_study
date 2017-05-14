@@ -3,6 +3,7 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const bootstrapEntryPoints = require('./webpack.bootstrap.config');
+const TransferWebpackPlugin = require('transfer-webpack-plugin');
 const glob = require('glob');
 const PurifyCSSPlugin = require('purifycss-webpack');
 
@@ -21,33 +22,6 @@ let scssConfig = isProd ? scssProd : scssDev;
 let cssConfig = isProd ? cssProd : cssDev;
 let bootstrapConfig = isProd ? bootstrapEntryPoints.prod: bootstrapEntryPoints.dev;
 
-///plugins
-let plugins = [
-    new HtmlWebpackPlugin({
-        title: "Project Demo",
-        minify: {
-            collapseWhitespace: true
-        },
-        hash: true,
-        filename: 'index.html',
-        template: path.resolve(__dirname, "./src/index.html")
-    })
-];
-plugins.push(
-    new ExtractTextPlugin({
-        filename: (getPath) => {
-            return getPath("app.css");
-        },
-        disable: !isProd,
-        allChunks: true
-    }),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
-    new PurifyCSSPlugin({
-      paths: glob.sync(path.join(__dirname, 'src/*.html')),
-    })
-)
-
 module.exports = {
     entry: {
         app: './src/app.js',
@@ -55,7 +29,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, './dist'),
-        filename: '[name].bundle.js'
+        filename: './js/[name].bundle.js'
     },
     module: {
         rules: [{
@@ -75,7 +49,7 @@ module.exports = {
                 test: /\.(jpe?g|png|gif|svg)$/i,
                 exclude: /node_modules/,
                 use: [
-                    'file-loader?name=images/[name].[ext]?[hash:12]',
+                    'file-loader?name=images/[hash:12].[ext]',
                     {
                         loader: 'image-webpack-loader',
                         query: {
@@ -96,8 +70,8 @@ module.exports = {
                     }
                 ]
             },
-            { test: /\.(woff2?|svg)$/, loader: 'url-loader?limit=10000&name=fonts/[name].[ext]' },
-            { test: /\.(ttf|eot)$/, loader: 'file-loader?name=fonts/[name].[ext]' },
+            { test: /\.(woff2?|svg)$/, loader: 'url-loader?limit=10000&name=/css/fonts/[name].[ext]' },
+            { test: /\.(ttf|eot)$/, loader: 'file-loader?name=/css/fonts/[name].[ext]' },
             { test:/bootstrap-sass[\/\\]assets[\/\\]javascripts[\/\\]/, loader: 'imports-loader?jQuery=jquery' }
         ]
     },
@@ -106,9 +80,30 @@ module.exports = {
         compress: true,
         port: 9000,
         hot: true,
-        inline: true
+        //inline: true
         // stats: "errors-only",
         //open: true
     },
-    plugins: plugins
+    plugins: [
+        new HtmlWebpackPlugin({
+            minify: {
+                collapseWhitespace: true
+            },
+            hash: true,
+            filename: 'index.html',
+            template: 'html-withimg-loader!' + path.resolve(__dirname, "./src/index.html")
+        }),    
+        new ExtractTextPlugin({
+            filename: (getPath) => {
+                return getPath("./css/app.css");
+            },
+            disable: !isProd,
+            allChunks: true
+        }),
+        new PurifyCSSPlugin({
+            paths: glob.sync(path.join(__dirname, 'src/*.html')),
+        }),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NamedModulesPlugin()
+    ]
 }

@@ -2,19 +2,37 @@
 <html lang="en">
 
 <head>
-    <title>
-        <%= htmlWebpackPlugin.options.title %>
-    </title>
+    <title>Project Demo</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-    <div class="jumbotron text-center">
-        <h1>My First Bootstrap Page</h1>
-        <p>Resize this responsive page to see the effect!</p>
-    </div>
-    <div class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span> 
+                </button>
+                <a class="navbar-brand" href="#">WebSiteName</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Page 1</a></li>
+                    <li><a href="#">Page 2</a></li>
+                    <li><a href="#">Page 3</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container" style="height: 1800px">
         <div class="row">
             <div class="col-sm-4">
                 <h3>Column 1</h3>
@@ -47,18 +65,20 @@
                                 <p>Some text in the modal.</p>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary">确定</button>
                             </div>
                         </div>
 
                     </div>
                 </div>
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-4">
                 <h3>Column 2</h3>
                 <p>Lorem ipsum dolor..</p>
                 <p>Ut enim ad..</p>
+            </div>
+            <div class="col-sm-4">                
                 <h3>Column 3</h3>
                 <p>Lorem ipsum dolor..</p>
                 <p>Ut enim ad..</p>
