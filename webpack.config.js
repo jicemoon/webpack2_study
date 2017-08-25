@@ -49,7 +49,13 @@ module.exports = {
                 test: /\.(jpe?g|png|gif|svg)$/i,
                 exclude: /node_modules/,
                 use: [
-                    'file-loader?name=images/[hash:12].[ext]',
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 1000,
+                            name: 'images/[hash:12].[ext]'
+                        }
+                    },
                     {
                         loader: 'image-webpack-loader',
                         query: {
@@ -70,9 +76,34 @@ module.exports = {
                     }
                 ]
             },
-            { test: /\.(woff2?|svg)$/, loader: 'url-loader?limit=10000&name=/css/fonts/[name].[ext]' },
-            { test: /\.(ttf|eot)$/, loader: 'file-loader?name=/css/fonts/[name].[ext]' },
-            { test:/bootstrap-sass[\/\\]assets[\/\\]javascripts[\/\\]/, loader: 'imports-loader?jQuery=jquery' }
+            { 
+                test: /\.(woff2?|svg)$/, 
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 10000,
+                        name: '/css/fonts/[name].[ext]'
+                    }
+                }
+            },
+            { 
+                test: /\.(ttf|eot)$/, 
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: '/css/fonts/[name].[ext]'
+                    }
+                }
+            },
+            { 
+                test:/bootstrap-sass[\/\\]assets[\/\\]javascripts[\/\\]/, 
+                use: {
+                    loader: 'imports-loader',
+                    options: {
+                        jQuery: 'jquery'
+                    }
+                }
+            }
         ]
     },
     devServer: {
