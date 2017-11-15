@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server",
-    "prod": "npm run clean && set NODE_ENV=production && webpack -p",
+    "dev": "webpack-dev-server --config ./config/webpack.config.dev.js",
+    "prod": "npm run clean && set NODE_ENV=production && webpack --config ./config/webpack.config.prod.js -p",
     "clean": "rimraf ./dist/*"
   },
   "author": "",
